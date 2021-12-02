@@ -1,3 +1,6 @@
+const maskID = undefined; // Set 0-9999 number for your own mask! Default is random.
+// const maskID = 2021;
+
 let pictImg;
 let pictureMaskImg;
 let backgroundImg;
@@ -45,7 +48,10 @@ function draw() {
   gargInstance.setPalette(
     '9db09d-223042-e9c770-594b3a-6a6d54-6b6539-ab985d-648f97-448ca2-f6e4b1-a5383d'
   );
-  const gMask = gargInstance.createMask(floor(random(0, 9999)), 3 * W);
+  const gMask = gargInstance.createMask(
+    maskID === undefined ? floor(random(0, 9999)) : maskID,
+    3 * W
+  );
 
   // Draw mask graphic
   const maskGraphics = createGraphics(3 * W, 3 * H);
