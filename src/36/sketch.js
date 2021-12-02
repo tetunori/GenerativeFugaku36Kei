@@ -42,13 +42,14 @@ function draw() {
 
   // Prepare Garg image
   const gargInstance = new Garg(false, true, false);
-  gargInstance.setPalette('9db09d-223042-e9c770-594b3a-6a6d54-6b6539-ab985d-648f97-448ca2-f6e4b1-a5383d');
-  const gMask = gargInstance.createMask(floor(random(0,9999)), 2 * W);
-  const gMaskImg = gMask.get();
+  gargInstance.setPalette(
+    '9db09d-223042-e9c770-594b3a-6a6d54-6b6539-ab985d-648f97-448ca2-f6e4b1-a5383d'
+  );
+  const gMask = gargInstance.createMask(floor(random(0, 9999)), 3 * W);
 
-  // Draw mask graphic 
-  const maskGraphics = createGraphics(W, H);
-  maskGraphics.image(gMaskImg, W / 5, 0, W / 2, W / 2);
+  // Draw mask graphic
+  const maskGraphics = createGraphics(3 * W, 3 * H);
+  maskGraphics.image(gMask, (3 * W) / 5, 0, (3 * W) / 2, (3 * W) / 2);
   const maskedMaskImg = maskGraphics.get();
   maskedMaskImg.mask(pictureMaskImg);
   g.image(maskedMaskImg, 0, 0, W, H);
