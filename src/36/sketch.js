@@ -56,13 +56,19 @@ function draw() {
   // Draw mask graphic
   const maskGraphics = createGraphics(3 * W, 3 * H);
   maskGraphics.image(gMask, (3 * W) / 5, 0, (3 * W) / 2, (3 * W) / 2);
+  gMask.remove();
   const maskedMaskImg = maskGraphics.get();
+  maskGraphics.remove();
   maskedMaskImg.mask(pictureMaskImg);
   g.image(maskedMaskImg, 0, 0, W, H);
 
   // Use PictureFrame Class
   const pF = new PictureFrame(g);
   pF.draw((width - pF.width) / 2, (height - pF.height) / 2);
+
+  g.remove();
+  gargInstance.remove();
+
 }
 
 function keyTyped() {

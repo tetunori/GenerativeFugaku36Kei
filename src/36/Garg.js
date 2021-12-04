@@ -1,8 +1,9 @@
 /* 
  * Garg : Generates A Resembling Generativemasks.
  * 
- * Version : 0.1
+ * Version : 0.1a
  * Auther  : deconbatch (https://www.deconbatch.com/)
+ * Revise  : tetunori   
  * License : Creative Commons Attribution Non-Commercial Share Alike license.
  *
  * Usage :
@@ -11,6 +12,8 @@
  *         image(gg.createMask(maskID, maskSize), 0, 0);
  *
  * Change log :
+ *   2021.04.Dec
+ *     Add remove procedure to internal graphics. Add remove() method to the Garg class.
  *   2021.16.Oct
  *     Forked from sketch.js of 2021.Aug.27 version on https://github.com/Generativemasks/generativemasks.github.io
  *     The author of the original Generativemasks is Shunsuke Takawo (https://generativemasks.on.fleek.co/).
@@ -183,12 +186,15 @@ class Garg {
 			sizedPg.drawingContext.shadowOffsetY = _size / 40;
 		}
 		sizedPg.image(maskCv, 0, 0);
+    maskCv.remove();
 		if (this.needTexture) {
 			sizedPg.scale(_size / this.cSize); // resize
-			sizedPg.image(this.getTexture(this.cSize), 0, 0);
+      const texture = this.getTexture(this.cSize);
+			sizedPg.image(texture, 0, 0);
+      texture.remove();
 		}
+    
 		return sizedPg;
-
 	}
 
 
@@ -296,6 +302,8 @@ class Garg {
 		target.scale(-1, 1);
 		target.image(g, -g.width / 2, 0);
 		target.pop();
+
+    g.remove();
 	}
 
 
@@ -513,6 +521,13 @@ class Garg {
 		}
 
 		return tex;
+	}
+
+  /*
+	 * remove : remove resources on p5.Graphics.
+	 */
+	remove() {
+		this.inst.remove();
 	}
 
 }
