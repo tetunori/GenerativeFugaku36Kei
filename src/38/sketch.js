@@ -49,6 +49,7 @@ function draw() {
   }
 
   const mask = maskGraphics.get(0, 0, W, H);
+  maskGraphics.remove();
 
   // Prepare image
   const copiedPictImg = pictImg.get();
@@ -66,6 +67,7 @@ function draw() {
 
   // Use PictureFrame Class
   const pF = new PictureFrame(g);
+  g.remove();
   pF.draw((width - pF.width) / 2, (height - pF.height) / 2);
 }
 

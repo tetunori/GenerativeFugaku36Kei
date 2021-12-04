@@ -49,6 +49,7 @@ function draw() {
 
   // Use PictureFrame Class
   const pF = new PictureFrame(g);
+  g.remove();
   pF.draw((width - pF.width) / 2, (height - pF.height) / 2);
 }
 
