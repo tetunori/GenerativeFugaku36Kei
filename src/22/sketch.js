@@ -6,7 +6,7 @@ let colors = [];
 const colorOptions = [
   ['cyan', 'red'],
   ['lime', 'magenta'],
-  ['yellow', 'blue'],
+  // ['yellow', 'blue'],
 ];
 
 // Image width/height size
@@ -19,6 +19,7 @@ function preload() {
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  frameRate(24);
   noStroke();
 
   W = 720;
@@ -52,7 +53,7 @@ function draw() {
   //// Draw main sketch
   glitchColor(g);
   randomSlice(g);
-  addNoise(g);
+  // addNoise(g);
   addScanline(g);
 
   // Use PictureFrame Class
@@ -62,7 +63,7 @@ function draw() {
   pF.draw((width - pF.width) / 2, (height - pF.height) / 2);
 }
 
-const glitchColor = ( g ) => {
+const glitchColor = (g) => {
   const gapMax = 10;
   // noise value within -gapMax to gapMax.
   const gap = noise(frameCount / 20) * gapMax * 2 - gapMax;
@@ -85,48 +86,59 @@ const glitchColor = ( g ) => {
 
   g.background(0);
 
-  push();
-  {
-    g.blendMode(ADD);
+  g.blendMode(ADD);
 
-    const targetWidth = W - gapMax * 2;
-    const targetHeight = H * (targetWidth / W);
+  const targetWidth = W - gapMax * 2;
+  const targetHeight = H * (targetWidth / W);
 
-    g.image(imgColorA, 0, 0, W, H, gapMax, gapMax, targetWidth, targetHeight);
-    g.image(imgColorB, 0, 0, W, H, gapMax, gapMax, targetWidth, targetHeight);
-  
-    g.blendMode(BLEND);
-  }
-  pop();
+  g.image(imgColorA, 0, 0, W, H, gapMax, gapMax, targetWidth, targetHeight);
+  g.image(imgColorB, 0, 0, W, H, gapMax, gapMax, targetWidth, targetHeight);
+
+  g.blendMode(BLEND);
 
   // Remove resources for Graphics.
   imgColorA.remove();
   imgColorB.remove();
+};
 
-}
-
-
-// Reference https://gin-graphic.hatenablog.com/entry/2021/12/17/000000
-const randomSlice = ( g ) => {
+// Reference: https://gin-graphic.hatenablog.com/entry/2021/12/17/000000
+const randomSlice = (g) => {
   const shift_size = 10;
 
-  for(let i=0;i<10;i++){
-    let sx = random(W*0.5);
-    let sy = random(H*0.05);
-    let x = random(W - sx*0.5);
-    let y = random(H - sy*0.5);
-    let ix = x + random(-1, 1)*shift_size;
-    let iy = y;
+  for (let i = 0; i < 25 * noise(frameCount / 20); i++) {
+    const sx = random(W * 0.5);
+    const sy = random(H * 0.05);
+    const x = random(W - sx * 0.5);
+    const y = random(H - sy * 0.5);
+    const ix = x + random(-1, 1) * shift_size;
+    const iy = y;
 
-    g.image( g, ix, iy, sx, sy, x, y, sx, sy);
+    g.image(g, ix, iy, sx, sy, x, y, sx, sy);
   }
+};
 
-}
+const addNoise = (g) => {
+  const noise_size = 1;
 
-const addNoise = ( g ) => {
+  g.push();
+  g.strokeWeight(0);
+  for (let i = 0; i < W; i += noise_size) {
+    for (let j = 0; j < H; j += noise_size) {
+      if (random() < 0.1) {
+        g.fill(random([0, 255]), 100 * noise(i, j));
+        g.square(i, j, noise_size);
+      }
+    }
+  }
+  g.pop();
+};
 
-}
-
-const addScanline = ( g ) => {
-
-}
+const addScanline = (g) => {
+  g.push();
+  g.stroke(0, 25);
+  g.strokeWeight(1);
+  for (let i = 0; i < W; i += H / 200) {
+    g.line(0, i, W, i);
+  }
+  g.pop();
+};
