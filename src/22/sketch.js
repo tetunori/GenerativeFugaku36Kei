@@ -50,7 +50,19 @@ function draw() {
   const g = createGraphics(W, H);
 
   //// Draw main sketch
+  glitchColor(g);
+  randomSlice(g);
+  addNoise(g);
+  addScanline(g);
 
+  // Use PictureFrame Class
+  const pF = new PictureFrame(g);
+  g.remove();
+
+  pF.draw((width - pF.width) / 2, (height - pF.height) / 2);
+}
+
+const glitchColor = ( g ) => {
   const gapMax = 10;
   // noise value within -gapMax to gapMax.
   const gap = noise(frameCount / 20) * gapMax * 2 - gapMax;
@@ -82,6 +94,8 @@ function draw() {
 
     g.image(imgColorA, 0, 0, W, H, gapMax, gapMax, targetWidth, targetHeight);
     g.image(imgColorB, 0, 0, W, H, gapMax, gapMax, targetWidth, targetHeight);
+  
+    g.blendMode(BLEND);
   }
   pop();
 
@@ -89,9 +103,30 @@ function draw() {
   imgColorA.remove();
   imgColorB.remove();
 
-  // Use PictureFrame Class
-  const pF = new PictureFrame(g);
-  g.remove();
+}
 
-  pF.draw((width - pF.width) / 2, (height - pF.height) / 2);
+
+// Reference https://gin-graphic.hatenablog.com/entry/2021/12/17/000000
+const randomSlice = ( g ) => {
+  const shift_size = 10;
+
+  for(let i=0;i<10;i++){
+    let sx = random(W*0.5);
+    let sy = random(H*0.05);
+    let x = random(W - sx*0.5);
+    let y = random(H - sy*0.5);
+    let ix = x + random(-1, 1)*shift_size;
+    let iy = y;
+
+    g.image( g, ix, iy, sx, sy, x, y, sx, sy);
+  }
+
+}
+
+const addNoise = ( g ) => {
+
+}
+
+const addScanline = ( g ) => {
+
 }
