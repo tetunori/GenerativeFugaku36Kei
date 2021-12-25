@@ -148,7 +148,9 @@ const drawCodeRain = (g) => {
           codeRainColor.setAlpha(map(k, 1, numChars, 255, 20));
           gfx.drawingContext.shadowColor = codeRainColor;
           gfx.fill(codeRainColor);
-          gfx.text(randomChars[j][i - k], 12 * j, tSize * (i - k));
+          if(i-k>-1){
+            gfx.text(randomChars[j][i - k], 12 * j, tSize * (i - k));
+          }
         }
       }
     }
